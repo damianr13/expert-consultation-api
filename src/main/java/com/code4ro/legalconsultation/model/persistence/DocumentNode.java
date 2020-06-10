@@ -37,4 +37,8 @@ public class DocumentNode extends BaseEntity {
 
     @Column(name = "node_index")
     private Integer index;
+
+    @OneToMany(mappedBy = "documentNode", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("last_edit_date ASC")
+    private List<Comment> comments;
 }

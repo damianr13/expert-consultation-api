@@ -211,10 +211,6 @@ public class CommentControllerIntegrationTest extends AbstractControllerIntegrat
     }
 
     private Comment createComment(DocumentNode node) {
-        Comment comment = commentFactory.createEntity();
-        comment.setDocumentNode(node);
-        comment.setOwner(currentUserService.getCurrentUser());
-        comment.setLastEditDateTime(new Date());
-        return commentRepository.save(comment);
+        return commentFactory.createEntityOnNodeWithUser(node, currentUserService.getCurrentUser());
     }
 }

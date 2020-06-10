@@ -4,6 +4,8 @@ import com.code4ro.legalconsultation.model.dto.CommentDetailDto;
 import com.code4ro.legalconsultation.model.dto.CommentDto;
 import com.code4ro.legalconsultation.model.persistence.ApplicationUser;
 import com.code4ro.legalconsultation.model.persistence.Comment;
+import com.code4ro.legalconsultation.model.persistence.DocumentNode;
+import com.code4ro.legalconsultation.repository.CommentRepository;
 import com.code4ro.legalconsultation.service.api.CommentService;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public final class CommentFactory {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     public CommentDto create() {
         final CommentDto commentDto = RandomObjectFiller.createAndFill(CommentDto.class);
@@ -36,5 +41,13 @@ public final class CommentFactory {
         comment.setText(RandomStringUtils.randomAlphanumeric(10));
         comment.setId(UUID.randomUUID());
         return comment;
+    }
+
+    public Comment createEntityOnNodeWithUser(DocumentNode node, ApplicationUser user) {
+        Comment comment = createEntity();
+        comment.setOwner(user);
+        comment.setDocumentNode(node);
+        comment.setLastEditDateTime(new Date());
+        return commentRepository.save(comment);
     }
 }
